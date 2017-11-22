@@ -1,0 +1,66 @@
+<md-dialog aria-label="Create new item">
+  <form ng-cloak>
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h2>Create new item</h2>
+        <span flex></span>
+      </div>
+    </md-toolbar>
+
+    <md-dialog-content>
+      <div class="md-dialog-content">
+        <fieldset class="standard">
+          <legend>Fill the fields to create new item</legend>
+            <md-input-container>
+                <label>Title</label>
+                <input ng-model="item.title">
+            </md-input-container>
+            <md-input-container>
+                <label>Text</label>
+                <input ng-model="item.text">
+            </md-input-container>
+            <md-checkbox ng-model="item.isCustom" aria-label="Custom Item">
+              This is custom item
+            </md-checkbox>
+            <md-datepicker ng-model="item.deliveryDate" md-placeholder="Enter date"></md-datepicker>
+        </fieldset>
+        <fieldset>
+            <md-slider-container>
+              <span>How important it is?</span>
+              <md-slider flex min="0" max="255" ng-model="color.red" aria-label="importanc" id="red-slider">
+              </md-slider>
+              <md-input-container>
+                <input flex type="number" ng-model="item.importance" aria-label="importance" aria-controls="red-slider">
+              </md-input-container>
+            </md-slider-container>
+            <md-radio-group ng-model="item.group">
+              <md-radio-button value="First" class="md-primary">First</md-radio-button>
+              <md-radio-button value="Middle">Middle</md-radio-button>
+              <md-radio-button value="Last">Last</md-radio-button>
+            </md-radio-group>
+            <md-switch ng-model="item.enabled" aria-label="enabled">
+              Enabled
+            </md-switch>
+            <md-input-container>
+              <label>Level</label>
+              <md-select ng-model="item.category">
+                <md-option ng-value="high">High</md-option>
+                <md-option ng-value="medium">Medium</md-option>
+                <md-option ng-value="low">Low</md-option>
+              </md-select>
+            </md-input-container>
+        </fieldset>
+      </div>
+    </md-dialog-content>
+
+    <md-dialog-actions layout="row">
+      <span flex></span>
+      <md-button ng-click="create()">
+       Create
+      </md-button>
+      <md-button ng-click="cancel()">
+        Cancel
+      </md-button>
+    </md-dialog-actions>
+  </form>
+</md-dialog>

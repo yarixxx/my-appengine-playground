@@ -1,0 +1,6 @@
+indexes:
+- kind: Asdf
+  ancestor: yes
+  properties:
+  - name: date
+    direction: desc

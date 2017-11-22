@@ -1,0 +1,11 @@
+.app-css {
+    border: 1px solid red;
+    background: #ddd;
+    display: block;
+    width: 100px;
+    height: 100px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: 10000;
+}

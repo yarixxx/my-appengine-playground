@@ -1,2 +1,5 @@
-# my-appengine-playground
-My playground for Appengine, Python, Angular 1.5
+# My Playground
+This is my AppEngine, Python and Angular 1.5 playground.
+
+dev_appserver.py app.yaml
+
