@@ -2,30 +2,25 @@
 
 var HelloApp = angular.module('HelloApp', ['ngMaterial', 'ngSanitize']);
 HelloApp.controller('HelloCtrl', function($scope, $mdDialog, $http, $mdToast, $mdSidenav) {
+  function delete_item(id) {
+    $http.delete('/backend/delete_item', id).then((response) => {
+        $mdToast.show($mdToast.simple().textContent('Item deleted!'));
+      }, (error) => {
+        $mdToast.show($mdToast.simple().textContent('Fail to delete item!'));
+      });
+  }
   function load_items() {
-    $http.get('/backend/list_items').then(function(response) {
-          $scope.items = response.data.items;
-      }, function(error) {
-        $mdToast.show(
-          $mdToast.simple()
-              .textContent('Fail to load items!')
-              .hideDelay(3000));
+    $http.get('/backend/list_items').then((response) => {
+        $scope.items = response.data.items;
+        $mdToast.show($mdToast.simple().textContent('Items loaded!'));
+      }, (error) => {
+        $mdToast.show($mdToast.simple().textContent('Fail to load items!'));
       });
   }
   load_items();
 
   $scope.lat = 0;
   $scope.lon = 0;
-
-  var endpoint = "wss://jgbml2yj.api.satori.com";
-  var appKey = "6Efba84ebC1628e5bcAc67BE0639BE8f";
-  var channel = "SmartTrash";
-
-  var client = new RTM(endpoint, appKey);
-  client.on('enter-connected', function () {
-    console.log('Connected to Satori RTM!');
-  });
-  client.start();
 
   $scope.chips = ['one', 'two', 'three'];
 
@@ -46,21 +41,20 @@ HelloApp.controller('HelloCtrl', function($scope, $mdDialog, $http, $mdToast, $m
     });
   };
 
-  $scope.showConfirm = function() {
-    // Appending dialog to document.body to cover sidenav in docs app
+  $scope.deleteItem = function(id) {
     var confirm = $mdDialog.confirm()
-          .title('Would you like to delete your debt?')
-          .textContent('All of the banks have agreed to forgive you your debts.')
-          .ariaLabel('Lucky day')
-          .ok('Please do it!')
-          .cancel('Sounds like a scam');
-
-    $mdDialog.show(confirm).then(function() {
-      $scope.status = 'You decided to get rid of your debt.';
-    }, function() {
-      $scope.status = 'You decided to keep your debt.';
+          .title('Delete item?')
+          .textContent('Are you sure you want to delete this item?')
+          .ariaLabel('Delete item.')
+          .ok('Delete')
+          .cancel('Keep');
+    $mdDialog.show(confirm).then(() => {
+      delete_item(id);
+      $mdToast.show($mdToast.simple().textContent('Confirmed!'));
+    }, () => {
+      $mdToast.show($mdToast.simple().textContent('Declined'));
     });
-  };
+  }
 
   $scope.showMenu = function() {
     $mdSidenav('left').toggle();
@@ -69,8 +63,8 @@ HelloApp.controller('HelloCtrl', function($scope, $mdDialog, $http, $mdToast, $m
   $scope.createNewItemDialog = function() {
     $mdSidenav('left').toggle();
     $mdDialog.show({
-      controller: CreateNewItemDialogController,
-      templateUrl: '/views/createNewItemDialog.html',
+      controller: CreateItemDialogController,
+      templateUrl: '/views/create_item_dialog.html',
       clickOutsideToClose: true
     })
     .then(function(answer) {
@@ -97,7 +91,7 @@ HelloApp.controller('HelloCtrl', function($scope, $mdDialog, $http, $mdToast, $m
 
   $scope.showAdvancedDialog = function(ev) {
     $mdDialog.show({
-      controller: 'CreateNewItemDialogController',
+      controller: 'CreateItemDialogController',
       templateUrl: '/views/dialog.html',
       parent: angular.element(document.body),
       clickOutsideToClose:true,
@@ -123,20 +117,11 @@ HelloApp.controller('HelloCtrl', function($scope, $mdDialog, $http, $mdToast, $m
     });
   }
 
-  $scope.showToast = function() {
-    $mdToast.show(
-      $mdToast.simple()
-        .textContent('Simple Toast!')
-        .hideDelay(3000)
-    );
-  }
-
   $scope.showActionToast = function() {
     var toast = $mdToast.simple()
       .textContent('Marked as read')
       .action('UNDO')
-      .highlightAction(true)
-      .highlightClass('md-accent')// Accent is used by default, this just demonstrates the usage.
+      .highlightAction(true);
 
     $mdToast.show(toast).then(function(response) {
       if ( response == 'ok' ) {
@@ -154,18 +139,4 @@ HelloApp.controller('HelloCtrl', function($scope, $mdDialog, $http, $mdToast, $m
       $scope.$digest();
     }
   });
-}).controller('CreateNewItemDialogController', CreateNewItemDialogController);
-
-function CreateNewItemDialogController($scope, $http, $mdDialog, $mdToast) {
-    $scope.cancel = function() {
-        $mdDialog.hide()
-    }
-    $scope.create = function() {
-        $http.post('/backend/create_item', $scope.item)
-            .then(function() {
-                $mdDialog.hide(true)              
-            }, function() {                
-            	$mdDialog.hide(false)                  
-            });
-    }
-}
+}).controller('CreateItemDialogController', CreateItemDialogController);

@@ -27,9 +27,6 @@
         <md-button ng-click="showMenu()" class="md-icon-button" aria-label="Settings">
           <md-icon>menu</md-icon>
         </md-button>
-
-        
-
         <md-button class="md-icon-button" aria-label="Favorite">
           <md-icon>favorite</md-icon>
         </md-button>
@@ -46,7 +43,7 @@
                 md-whiteframe="4">
 
       <md-toolbar class="md-theme-indigo">
-        <h1 class="md-toolbar-tools">Disabled Backdrop</h1>
+        <h1 class="md-toolbar-tools">Sidebar</h1>
       </md-toolbar>
 
       <md-content layout-margin>
@@ -63,22 +60,9 @@
     <md-tabs md-dynamic-height md-border-bottom>
       <md-tab label="List">
         <md-content class="md-padding">
-            <md-progress-linear md-mode="query" value="{{vm.determinateValue}}"></md-progress-linear>
-
-            <md-list>
-                 <md-list-item class="md-2-line" ng-repeat="item in items">              
-                  <div class="md-list-item-text">
-                    <h3>{{ item.title }}</h3>
-                    <p>{{ item.text }}</p>
-                  </div>
-    		 <md-divider inset></md-divider>
-                 </md-list-item>
-            </md-list>
-            <md-progress-circular md-mode="indeterminate"></md-progress-circular>
-  
-          
+            <div ng-include="'/views/items_list.html'"></div>          
         </md-content>
-      </md-tab>
+      </md-tab> 
       <md-tab label="Controls">
         <md-content class="md-padding">
           <section layout="row" layout-sm="row" layout-align="center right" layout-wrap>
@@ -227,6 +211,7 @@
       </md-tab>
     </md-tabs>
   </md-content>
+  <script src="/js/create_item_dialog.js"></script>
   <script src="/js/app.js"></script>
 </body>
 </html>

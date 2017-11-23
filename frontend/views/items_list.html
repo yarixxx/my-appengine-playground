@@ -1,0 +1,16 @@
+<md-content>
+  <md-progress-linear md-mode="query"></md-progress-linear>
+
+  <md-list>
+    <md-list-item class="md-2-line" ng-repeat="item in items">              
+      <div class="md-list-item-text">
+        <h3>{{ item.title }}</h3>
+        <p>{{ item.text }}</p>
+      </div>
+      <md-button ng-click="deleteItem(item.id)" class="md-icon-button">
+        <md-icon>delete</md-icon>
+      </md-button>
+      <md-divider inset></md-divider>
+    </md-list-item>
+  </md-list>
+<md-content>
